@@ -120,26 +120,38 @@ class GreenUnet160b(keras.Model):
         self.deconv1_1 = Conv2D(32, kernel_size=3, padding = 'same', activation='relu')
         self.deconv1_2 = Conv2D(32, kernel_size=3, padding = 'same', activation='relu')
         
+        ### BatchNormalization
+        self.BN1 = BatchNormalization()
+        self.BN2 = BatchNormalization()
+        self.BN3 = BatchNormalization()
+        self.BN4 = BatchNormalization()
+        self.BN5 = BatchNormalization()
+        
         # Output, Green image of size 160 * 160
         self.outputs = Conv2D(1, kernel_size=3, padding = 'same', activation='sigmoid')
         
     def call(self, inputs):
         x = self.conv1_1(inputs)
-        shortcut1 = self.conv1_2(x)
+        x = self.conv1_2(x)
+        shortcut1 = self.BN1(x)
         x = MaxPooling2D(2)(shortcut1)
         x = self.conv2_1(x)
-        shortcut2 = self.conv2_2(x)
+        x = self.conv2_2(x)
+        shortcut2 = self.BN2(x)
         x = MaxPooling2D(2)(shortcut2)
         x = self.conv3_1(x)
-        shortcut3 = self.conv3_2(x)
+        x = self.conv3_2(x)
+        shortcut3 = self.BN3(x)
         x = MaxPooling2D(2)(shortcut3)
         x = self.conv4_1(x)
         x = self.conv4_2(x)
-        shortcut4 = Dropout(0.5)(x)
+        x = Dropout(0.5)(x)
+        shortcut4 = self.BN4(x)
         x = MaxPooling2D(2)(shortcut4)
         x = self.conv5_1(x)
         x = self.conv5_2(x)
         x = Dropout(0.5)(x)
+        x = self.BN5(x)
 
         x = self.upconv4(UpSampling2D(2)(x))
         merge4 = concatenate([x, shortcut4], axis=3)
