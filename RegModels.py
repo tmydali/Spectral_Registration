@@ -1,10 +1,10 @@
-import keras
-from keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D
-from keras.layers import Conv2DTranspose, BatchNormalization, Dropout
-from keras.layers.merge import concatenate, Add
-from keras import Model
+import tensorflow as tf
+from tensorflow.keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D
+from tensorflow.keras.layers import Conv2DTranspose, BatchNormalization, Dropout
+from tensorflow.keras.layers import concatenate, Add
+from tensorflow.keras import Model
 
-class GreenUnet160(keras.Model):
+class GreenUnet160(Model):
     '''
     This model takes NIR image as input, and generate green image as output.
     Using Unet-like architecture with input size 160 * 160.
@@ -76,7 +76,7 @@ class GreenUnet160(keras.Model):
         x = Input(shape=(160, 160, 1))
         return Model(inputs=x, outputs=self.call(x))
     
-class GreenUnet160b(keras.Model):
+class GreenUnet160b(Model):
     '''
     This model takes NIR image as input, and generate green image as output.
     Using Unet-like architecture with input size 160 * 160.
@@ -176,7 +176,7 @@ class GreenUnet160b(keras.Model):
         x = Input(shape=(160, 160, 1))
         return Model(inputs=x, outputs=self.call(x))
     
-class GreenUnet320(keras.Model):
+class GreenUnet320(Model):
     '''
     This model takes NIR image as input, and generate green image as output.
     Using Unet-like architecture with input size 320 * 320.
